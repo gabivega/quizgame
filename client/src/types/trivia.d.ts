@@ -1,0 +1,13 @@
+export interface TriviaQuestion {
+    category: string;
+    type: "multiple" | "boolean";
+    difficulty: "easy" | "medium" | "hard";
+    question: string;
+    correct_answer: string;
+    incorrect_answers: string[]
+}
+
+export interface TriviaAPIResponse {
+    response_code: number;
+    results: TriviaQuestion[];
+}
