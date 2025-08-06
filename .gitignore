@@ -5,7 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build
-/client/build/
+
 /server/build/
 /dist/
 
