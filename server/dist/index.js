@@ -8,12 +8,16 @@ const cors_1 = __importDefault(require("cors"));
 const Scores_1 = __importDefault(require("./Routes/Scores"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
 const fs_1 = __importDefault(require("fs"));
 const app = (0, express_1.default)();
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
 const PORT = 5000;
 const HOST = process.env.HOST || 'localhost';
+console.log(HOST);
+const mongoURL = process.env.MONGO_DB_URL;
 if (process.env.NODE_ENV === 'production') {
     const privateKey = fs_1.default.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
     const certificate = fs_1.default.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
@@ -30,7 +34,6 @@ else {
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 dotenv_1.default.config();
-const mongoURL = process.env.MONGO_DB_URL;
 if (!mongoURL) {
     throw new Error('La variable de entorno MONGO_DB_URL no está definida');
 }

@@ -4,14 +4,18 @@ import { Question } from './interfaces/Question';
 import scoreRoutes from './Routes/Scores';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
 
 
 const app = express();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const PORT = 5000;
 const HOST = process.env.HOST || 'localhost';
+console.log(HOST);
+const mongoURL = process.env.MONGO_DB_URL;
 
 if (process.env.NODE_ENV === 'production') {
   const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
@@ -30,7 +34,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use(cors());
 app.use(express.json());
 dotenv.config();
-const mongoURL = process.env.MONGO_DB_URL;
 
 if (!mongoURL) {
   throw new Error('La variable de entorno MONGO_DB_URL no está definida');
