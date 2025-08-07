@@ -4,18 +4,29 @@ import { Question } from './interfaces/Question';
 import scoreRoutes from './Routes/Scores';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import http from 'http';
 import https from 'https';
 import fs from 'fs';
 
 
 const app = express();
-
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
-
-const credentials = { key: privateKey, cert: certificate };
-
 const PORT = 5000;
+const HOST = process.env.HOST || 'localhost';
+
+if (process.env.NODE_ENV === 'production') {
+  const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
+  const certificate = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
+
+  const credentials = { key: privateKey, cert: certificate };
+  https.createServer(credentials, app).listen(443, () => {
+    console.log('🚀 Server HTTPS running on port 443');
+  });
+} else {
+  http.createServer(app).listen(PORT, () => {
+    console.log(`🚀 Server HTTP running on http://${HOST}:${PORT}`);
+  });
+}
+
 app.use(cors());
 app.use(express.json());
 dotenv.config();
@@ -34,11 +45,6 @@ app.get('/',(req: Request, res: Response)=> {
     res.send('servidor funcionando')
 });
 
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(5000, () => {
-  console.log('Servidor HTTPS corriendo en el puerto 5000');
-});
 
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
@@ -73,7 +79,6 @@ app.get('/api/questions', async (req: Request, res: Response) => {
         res.status(500).json({error: 'Error al obtener preguntas'})
     }
 })
-const currentScore = 0;
 
 app.post('/api/answers', async (req: Request, res: Response) => {
     try {
@@ -84,10 +89,6 @@ app.post('/api/answers', async (req: Request, res: Response) => {
             return res.status(404).json({error:"Pregunta no encontrada"})
         }
         const isCorrect = selectedOption === question.correct_answer;
-        // if (isCorrect) {
-        //     handleScore(currentScore);
-        //     console.log("respuesta correcta: ", question.correct_answer)
-        // }
 
         res.json({"question":question.correct_answer, "isCorrect": isCorrect})
 
@@ -98,7 +99,3 @@ app.post('/api/answers', async (req: Request, res: Response) => {
 
 app.use('/api/scores', scoreRoutes);
 app.use('/api/scores', scoreRoutes);
-
-// app.listen(PORT, '0.0.0.0',() => {
-//     console.log(`Servidor corriendo en puerto : ${PORT}`)
-// })
