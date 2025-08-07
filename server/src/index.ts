@@ -1,12 +1,20 @@
 import express, {Request, Response } from 'express';
 import cors from 'cors';
 import { Question } from './interfaces/Question';
-import handleScore from './utils/handleScore';
 import scoreRoutes from './Routes/Scores';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import https from 'https';
+import fs from 'fs';
+
 
 const app = express();
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizgame.gabivega.tech/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/quizgame.gabivega.tech/fullchain.pem', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
+
 const PORT = 5000;
 app.use(cors());
 app.use(express.json());
@@ -24,6 +32,12 @@ mongoose.connect(mongoURL)
 
 app.get('/',(req: Request, res: Response)=> {
     res.send('servidor funcionando')
+});
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(5000, () => {
+  console.log('Servidor HTTPS corriendo en el puerto 5000');
 });
 
 app.use((req, res, next) => {
@@ -85,6 +99,6 @@ app.post('/api/answers', async (req: Request, res: Response) => {
 app.use('/api/scores', scoreRoutes);
 app.use('/api/scores', scoreRoutes);
 
-app.listen(PORT, '0.0.0.0',() => {
-    console.log(`Servidor corriendo en puerto : ${PORT}`)
-})
+// app.listen(PORT, '0.0.0.0',() => {
+//     console.log(`Servidor corriendo en puerto : ${PORT}`)
+// })
