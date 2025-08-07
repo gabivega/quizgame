@@ -10,8 +10,8 @@ import fs from 'fs';
 
 const app = express();
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizgame.gabivega.tech/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/quizgame.gabivega.tech/fullchain.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate };
 
