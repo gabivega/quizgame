@@ -22,8 +22,8 @@ if (process.env.NODE_ENV === 'production') {
   const certificate = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
 
   const credentials = { key: privateKey, cert: certificate };
-  https.createServer(credentials, app).listen(443, () => {
-    console.log('🚀 Server HTTPS running on port 443');
+  https.createServer(credentials, app).listen(PORT, () => {
+    console.log(`🚀 Server HTTPS running on port ${PORT}, host ${HOST}}`);
   });
 } else {
   http.createServer(app).listen(PORT, () => {
