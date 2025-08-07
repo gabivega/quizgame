@@ -11,12 +11,14 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 dotenv.config();
+const mongoURL = process.env.MONGO_DB_URL;
+
+if (!mongoURL) {
+  throw new Error('La variable de entorno MONGO_DB_URL no está definida');
+}
 
 // Conexión a MongoDB Atlas
-mongoose.connect(process.env.MONGO_DB_URL || '', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+mongoose.connect(mongoURL)
 .then(() => console.log('MongoDB conectado'))
 .catch((err) => console.error('Error al conectar MongoDB', err));
 

@@ -1,9 +1,9 @@
-import express from "express";
+import express, { Request, Response, Router } from "express";
 import Score from "../models/Score";
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request, res: Response) => {
     try {
         const { name, score, category } = req.body;
 
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/:category', async (req, res) => {
+router.get('/:category', async (req: Request, res: Response) => {
 try {
     const category = req.params.category;
     console.log(category)
@@ -43,7 +43,7 @@ try {
     res.status(500).json({error: "Error al resolver la solicitud"})
 }
 })
-router.post('/getPosition', async (req, res) => {
+router.post('/getPosition', async (req: Request, res: Response) => {
  try {
         const { score } = req.body;
 
