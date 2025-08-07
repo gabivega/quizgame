@@ -26,6 +26,11 @@ app.get('/',(req: Request, res: Response)=> {
     res.send('servidor funcionando')
 });
 
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+});
+
 function generateId(length = 4): string {
     const chars = "0123456789";
     const id = Array.from({ length}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
