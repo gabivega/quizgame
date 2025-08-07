@@ -1,5 +1,6 @@
 import React , {useEffect, useState}from 'react';
 import { scoreType } from '../types/scoreType';
+import SectionSpinner from './Spinner-section';
 
 type ScoreCardProps = {
   scores: scoreType[];
@@ -29,10 +30,12 @@ const ScoreCard = ({ scores, setScores, selectedCategory }: ScoreCardProps) => {
 
 
 const [category, setCategory] = useState("all");
+const [isLoading, setIsLoading] = useState<boolean>(false);
 // const [scores, setScores] = useState<scoreType[]>([]);
 
 useEffect(() => {
  const res = async ()=> {
+  setIsLoading(true)
    const res = await fetch(`${baseUrl}/api/scores/${category}`);
    const data:scoreType[] = await res.json();
    data.sort((a,b) => 
@@ -41,6 +44,7 @@ useEffect(() => {
    setScores(data);
  }
  res();
+ setIsLoading(false)
 }, [])
 
 
@@ -48,7 +52,8 @@ useEffect(() => {
     <div className='border-2 border-white rounded-lg m-6 p-2'>
         <h2 className='text-2xl font-bold my-4 drop-shadow-lg text-center'>Top 20 Score Board</h2>
         {selectedCategory && <p className='text-xl font-bold my-4 drop-shadow-lg text-center '>{categoryMap[selectedCategory]}</p>}     
-      <table className="table-auto border-collapse border border-gray-400 w-[50%] mx-auto mt-4">
+{ isLoading ? <SectionSpinner /> :     
+  <table className="table-auto border-collapse border border-gray-400 w-[50%] mx-auto mt-4">
   <thead className="">
     <tr>
       <th className="border border-gray-300 px-4 py-2 text-left w-4">#</th>
@@ -67,7 +72,7 @@ useEffect(() => {
       </tr>
     ))}
   </tbody>
-</table>
+</table>}
     </div>
   )
 }
