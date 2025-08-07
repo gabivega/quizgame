@@ -85,6 +85,6 @@ app.post('/api/answers', async (req: Request, res: Response) => {
 app.use('/api/scores', scoreRoutes);
 app.use('/api/scores', scoreRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0',() => {
     console.log(`Servidor corriendo en puerto : ${PORT}`)
 })
