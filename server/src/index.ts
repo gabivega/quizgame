@@ -20,7 +20,7 @@ const mongoURL = process.env.MONGO_DB_URL;
 if (process.env.NODE_ENV === 'production') {
   const privateKey = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/privkey.pem', 'utf8');
   const certificate = fs.readFileSync('/etc/letsencrypt/live/quizapi.gabivega.tech/fullchain.pem', 'utf8');
-
+ console.log("dentro del https")
   const credentials = { key: privateKey, cert: certificate };
   https.createServer(credentials, app).listen(PORT, () => {
     console.log(`🚀 Server HTTPS running on port ${PORT}, host ${HOST}}`);
