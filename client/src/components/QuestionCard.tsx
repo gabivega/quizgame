@@ -35,7 +35,7 @@ dangerouslySetInnerHTML={{__html: question.question}}
     <li key={i}>
         <div className="flex flex-row gap-2 ">
         <button className={`w-full bg-blue-100
-          ${(answer === selectedAnswer) && selectedAnswer !== correctAnswer ? 'bg-red-500' : ''}
+          ${(answer === selectedAnswer) && selectedAnswer !== correctAnswer  && (feedback === "incorrect") ? 'bg-red-500' : ''}
           ${answer === correctAnswer && 'bg-green-500' }
            hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-xl 
            transition-colors duration-200 text-left w-[60%]`}
