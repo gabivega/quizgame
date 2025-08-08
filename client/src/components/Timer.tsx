@@ -7,7 +7,7 @@ type TimerProps = {
 
 const Timer = ({setIsGameEnded, isGameEnded, currentScore}: TimerProps) => {
 
-const [timeLeft, setTimeLeft] = useState<number>(10);
+const [timeLeft, setTimeLeft] = useState<number>(25);
 
 
 useEffect(() => {

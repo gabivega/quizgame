@@ -21,6 +21,7 @@ return allAnswers.sort(()=> Math.random() - 0.5);
 const [correctAnswer, setCorrectAnswer] = useState<string>("");
 const [selectedAnswer, setSelectedAnswer] = useState<string>("");
 const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null);
+const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false);
 
 return (
 <div className="max-w-xl mx-auto bg-white shadow-md rounded-2xl p-6 my-2 text-black">
@@ -40,7 +41,7 @@ dangerouslySetInnerHTML={{__html: question.question}}
            hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-xl 
            transition-colors duration-200 text-left w-[60%]`}
         dangerouslySetInnerHTML={{__html:answer }}
-        onClick={ !isGameEnded ? () => handleAnswer(
+        onClick={ !isGameEnded && !isAnswerSent ? () => handleAnswer(
         question.id, 
         answer,
         setSelectedAnswer, 
@@ -51,6 +52,7 @@ dangerouslySetInnerHTML={{__html: question.question}}
         setFeedback, 
         currentScore,
         nextQuestion,
+        setIsAnswerSent
         ) : () => {return}} />
         {/* {answer === correctAnswer && <p >Correct Answer</p>} */}
         </div>

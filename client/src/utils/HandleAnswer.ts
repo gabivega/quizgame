@@ -8,9 +8,10 @@ const handleAnswer = async(
     setCurrentScore: React.Dispatch<React.SetStateAction<number>>,
     setFeedback: React.Dispatch<React.SetStateAction<"correct" | "incorrect" | null>>,
     currentScore: number,
-    nextQuestion: Function
+    nextQuestion: Function,
+    setIsAnswerSent: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-
+    setIsAnswerSent(true);
     const baseUrl = process.env.REACT_APP_BASE_URL;
     setCorrectAnswer("");
 setSelectedAnswer(selectedOption);
@@ -31,6 +32,7 @@ else setFeedback("incorrect");
 //     setIsGameEnded(true)
 // }
 nextQuestion();
+setIsAnswerSent(false);
 return respuesta.question;
 }
 
